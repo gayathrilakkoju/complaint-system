@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complaint Registration System</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin:0;
+            padding:0;
+            text-align:center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height:100vh;
+        }
+
+        h2{
+            color:white;
+            margin-top:20px;
+        }
+
+        form{
+            background:white;
+            width:320px;
+            margin:30px auto;
+            padding:25px;
+            border-radius:10px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        input, textarea{
+            width:90%;
+            margin:10px;
+            padding:10px;
+            border-radius:5px;
+            border:1px solid #ccc;
+            font-size:14px;
+        }
+
+        button{
+            padding:10px 20px;
+            background:#667eea;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+            font-size:15px;
+        }
+
+        button:hover{
+            background:#5a67d8;
+        }
+
+        table{
+            margin:30px auto;
+            border-collapse:collapse;
+            background:white;
+            border-radius:10px;
+            overflow:hidden;
+            box-shadow:0 8px 20px rgba(0,0,0,0.2);
+            width:90%;
+            max-width:800px;
+        }
+
+        th,td{
+            padding:10px 15px;
+            border-bottom:1px solid #ddd;
+        }
+
+        th{
+            background:#667eea;
+            color:white;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Online Complaint Form</h2>
+
+<form id="form">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <textarea id="complaint" placeholder="Enter your complaint" required></textarea>
+    <button type="submit">Submit Complaint</button>
+</form>
+
+<h2>All Complaints</h2>
+<table id="table">
+<tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Complaint</th>
+</tr>
+</table>
+
+<script>
+function loadComplaints(){
+    let data = JSON.parse(localStorage.getItem("complaints")) || [];
+    let table = document.getElementById("table");
+
+    table.innerHTML = `
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Complaint</th>
+        </tr>
+    `;
+
+    data.forEach(c=>{
+        table.innerHTML += `
+        <tr>
+            <td>${c.name}</td>
+            <td>${c.email}</td>
+            <td>${c.complaint}</td>
+        </tr>`;
+    });
+}
+
+loadComplaints();
+
+document.getElementById("form").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    // Correct way to read values
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let complaint = document.getElementById("complaint").value;
+
+    let complaintData = { name, email, complaint };
+
+    let data = JSON.parse(localStorage.getItem("complaints")) || [];
+    data.push(complaintData);
+    localStorage.setItem("complaints", JSON.stringify(data));
+
+    // Dummy API call to demonstrate API usage
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+        method:"POST",
+        body: JSON.stringify(complaintData),
+        headers: {"Content-type":"application/json"}
+    });
+
+    alert("Complaint Submitted Successfully!");
+    this.reset();
+    loadComplaints();
+});
+</script>
+
+</body>
+</html>
