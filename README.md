@@ -20,5 +20,4 @@ The application stores complaints in the browser and shows them on the page afte
 - JavaScript  
 
 ##  Screenshot
-
-
+![Complaint System](https://github.com/gayathrilakkoju/complaint-system/blob/main/OCF.jpg?raw=true)
